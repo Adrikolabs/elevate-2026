@@ -88,8 +88,8 @@ export async function uploadWithProgress(bucket: Bucket, path: string, file: Blo
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
   if (!token) throw new Error("NOT_AUTHENTICATED");
-  const base = import.meta.env.VITE_SUPABASE_URL as string;
-  const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string;
+  const base = import.meta.env["VITE_SUPABASE_URL"] as string;
+  const key = import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string;
   const encodedPath = path.split("/").map(encodeURIComponent).join("/");
 
   await new Promise<void>((resolve, reject) => {
