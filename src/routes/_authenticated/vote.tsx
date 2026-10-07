@@ -90,7 +90,7 @@ function VotePage() {
     }
     setSuccess(selected.full_name);
     setSelected(null);
-    confetti({ particleCount: 160, spread: 90, colors: ["#D4AF37", "#F2C94C", "#123B70", "#FFFFFF"], origin: { y: 0.5 } });
+    confetti({ particleCount: 160, spread: 90, colors: getComputedStyle(document.documentElement).getPropertyValue("--confetti-colors").split(",").map((color) => color.trim()), origin: { y: 0.5 } });
     queryClient.invalidateQueries({ queryKey: ["me"] });
   };
 

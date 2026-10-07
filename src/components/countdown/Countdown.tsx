@@ -26,7 +26,7 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
 
   useEffect(() => {
     if (state?.phase === "today") {
-      confetti({ particleCount: 120, spread: 80, colors: ["#D4AF37", "#F2C94C", "#123B70", "#FFFFFF"], origin: { y: 0.4 } });
+      confetti({ particleCount: 120, spread: 80, colors: getComputedStyle(document.documentElement).getPropertyValue("--confetti-colors").split(",").map((color) => color.trim()), origin: { y: 0.4 } });
     }
   }, [state?.phase]);
 
