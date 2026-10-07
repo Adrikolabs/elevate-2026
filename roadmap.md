@@ -1,14 +1,18 @@
 # Elevate Academy Graduation Portal — Roadmap
 
-- [x] Phase 1 — Setup, design system, reusable UI
-- [x] Phase 2 — Database (all tables, RLS, cast_vote, seed departments + demo data)
-- [x] Phase 3 — Auth (email/password + Google, registered-email linking, admin role, protected routes)
-- [x] Phase 4 — Public homepage (hero, countdown, featured slider, departments, students, wishes, footer)
-- [x] Phase 5 — Student directory + profiles
-- [x] Phase 6 — Project showcase (search, filters, carousel, details, media preview)
-- [x] Phase 7 — Voting (department-only nominees, confirm dialog, secure function, confetti)
-- [x] Phase 8 — Graduation wall (posting, realtime, moderation hooks)
-- [ ] Phase 9 — Admin dashboard: overview + settings + students/nominees done; departments, projects, messages, votes, audit logs pages pending
+- [x] Phase 1–8 — Setup, database, auth, homepage, students, projects, voting, wishes
+- [ ] Phase 9 — Admin: overview, settings, students, nominees, wishes, projects review done; departments, votes, audit-log pages pending
 - [ ] Phase 10 — Reports & CSV exports
-- [ ] Phase 11–13 — Security tests, responsive pass, polish
-- [ ] Bootstrap first Super Admin — waiting on admin email from user
+- [x] Super Admin account (elevate2026class@gmail.com) set up
+
+## Update 2 — headshots & project submissions
+- [ ] Remove /countdown page + nav link; graduation day / post-graduation messages
+- [ ] Private storage buckets + ownership policies (headshots, project images, PDFs)
+- [ ] Student headshot upload (gallery + front camera, preview, progress)
+- [ ] Projects: submission workflow columns + save_my_project function
+- [ ] Student project form (image/camera, link, PDF, preview, submit, success modal)
+- [ ] Student dashboard: graduation profile, completion, project status, quick actions
+- [ ] Admin projects review page (tabs, approve/reject/request changes/feature)
+- [ ] Public showcase shows approved projects only; cards/detail show headshot, PDF, tools
+- [ ] Admin dashboard headshot/project stats
+- [ ] Security + responsive testing

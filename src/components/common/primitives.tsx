@@ -3,6 +3,7 @@ import { GraduationCap, type LucideIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { departmentsQuery } from "@/lib/data";
+import { useFileUrl } from "@/lib/storage";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export function Logo({ light = false, className }: { light?: boolean; className?: string }) {
@@ -44,9 +45,10 @@ export function StudentAvatar({
   className?: string;
 }) {
   const sizes = { sm: "h-9 w-9 text-xs", md: "h-12 w-12 text-sm", lg: "h-20 w-20 text-xl", xl: "h-28 w-28 text-3xl" };
-  return url ? (
+  const src = useFileUrl(url);
+  return src ? (
     <img
-      src={url}
+      src={src}
       alt={`Photo of ${name}`}
       loading="lazy"
       className={cn("shrink-0 rounded-full object-cover ring-2 ring-gold/40", sizes[size], className)}
