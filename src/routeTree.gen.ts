@@ -11,8 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CountdownRouteImport } from './routes/countdown'
+import { Route as ResultsRouteImport } from './routes/results'
+import { Route as WishesRouteImport } from './routes/wishes'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
+import { Route as StudentsIndexRouteImport } from './routes/students.index'
+import { Route as StudentsIdRouteImport } from './routes/students.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,6 +26,16 @@ const IndexRoute = IndexRouteImport.update({
 const CountdownRoute = CountdownRouteImport.update({
   id: '/countdown',
   path: '/countdown',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsRoute = ResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WishesRoute = WishesRouteImport.update({
+  id: '/wishes',
+  path: '/wishes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
@@ -34,39 +48,90 @@ const ProjectsIdRoute = ProjectsIdRouteImport.update({
   path: '/projects/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudentsIndexRoute = StudentsIndexRouteImport.update({
+  id: '/students/',
+  path: '/students/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudentsIdRoute = StudentsIdRouteImport.update({
+  id: '/students/$id',
+  path: '/students/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/countdown': typeof CountdownRoute
+  '/results': typeof ResultsRoute
+  '/wishes': typeof WishesRoute
   '/projects/$id': typeof ProjectsIdRoute
+  '/students/$id': typeof StudentsIdRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/students/': typeof StudentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/countdown': typeof CountdownRoute
+  '/results': typeof ResultsRoute
+  '/wishes': typeof WishesRoute
   '/projects/$id': typeof ProjectsIdRoute
+  '/students/$id': typeof StudentsIdRoute
   '/projects': typeof ProjectsIndexRoute
+  '/students': typeof StudentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/countdown': typeof CountdownRoute
+  '/results': typeof ResultsRoute
+  '/wishes': typeof WishesRoute
   '/projects/$id': typeof ProjectsIdRoute
+  '/students/$id': typeof StudentsIdRoute
   '/projects/': typeof ProjectsIndexRoute
+  '/students/': typeof StudentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/countdown' | '/projects/$id' | '/projects/'
+  fullPaths:
+    | '/'
+    | '/countdown'
+    | '/results'
+    | '/wishes'
+    | '/projects/$id'
+    | '/students/$id'
+    | '/projects/'
+    | '/students/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/countdown' | '/projects/$id' | '/projects'
-  id: '__root__' | '/' | '/countdown' | '/projects/$id' | '/projects/'
+  to:
+    | '/'
+    | '/countdown'
+    | '/results'
+    | '/wishes'
+    | '/projects/$id'
+    | '/students/$id'
+    | '/projects'
+    | '/students'
+  id:
+    | '__root__'
+    | '/'
+    | '/countdown'
+    | '/results'
+    | '/wishes'
+    | '/projects/$id'
+    | '/students/$id'
+    | '/projects/'
+    | '/students/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CountdownRoute: typeof CountdownRoute
+  ResultsRoute: typeof ResultsRoute
+  WishesRoute: typeof WishesRoute
   ProjectsIdRoute: typeof ProjectsIdRoute
+  StudentsIdRoute: typeof StudentsIdRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  StudentsIndexRoute: typeof StudentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -85,6 +150,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CountdownRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/results': {
+      id: '/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wishes': {
+      id: '/wishes'
+      path: '/wishes'
+      fullPath: '/wishes'
+      preLoaderRoute: typeof WishesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects/': {
       id: '/projects/'
       path: '/projects'
@@ -99,14 +178,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/students/': {
+      id: '/students/'
+      path: '/students'
+      fullPath: '/students/'
+      preLoaderRoute: typeof StudentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/students/$id': {
+      id: '/students/$id'
+      path: '/students/$id'
+      fullPath: '/students/$id'
+      preLoaderRoute: typeof StudentsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CountdownRoute: CountdownRoute,
+  ResultsRoute: ResultsRoute,
+  WishesRoute: WishesRoute,
   ProjectsIdRoute: ProjectsIdRoute,
+  StudentsIdRoute: StudentsIdRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  StudentsIndexRoute: StudentsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
