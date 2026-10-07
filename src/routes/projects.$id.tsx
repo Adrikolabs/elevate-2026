@@ -1,0 +1,126 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowLeft, ExternalLink, FileText } from "lucide-react";
+import { isValidUuid, projectQuery } from "@/lib/data";
+import { ProjectCover } from "@/components/projects/ProjectCard";
+import { DepartmentBadge, EmptyState, StudentAvatar } from "@/components/common/primitives";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+
+export const Route = createFileRoute("/projects/$id")({
+  head: () => ({
+    meta: [
+      { title: "Project Details — Elevate Academy Showcase" },
+      { name: "description", content: "View a final project from an Elevate Academy Class of December 2026 graduate." },
+      { property: "og:title", content: "Project Details — Elevate Academy Showcase" },
+      { property: "og:description", content: "A graduating student's final project at Elevate Academy." },
+    ],
+  }),
+  component: ProjectDetail,
+});
+
+function embedUrl(url: string): string | null {
+  const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{6,})/);
+  if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}`;
+  const vimeo = url.match(/vimeo\.com\/(\d+)/);
+  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`;
+  return null;
+}
+
+function MediaPreview({ videoUrl, projectUrl, title }: { videoUrl: string | null; projectUrl: string | null; title: string }) {
+  const candidate = videoUrl ?? projectUrl;
+  if (!candidate) return null;
+  const embed = embedUrl(candidate);
+  if (embed) {
+    return (
+      <div className="aspect-video overflow-hidden rounded-2xl border bg-navy">
+        <iframe src={embed} title={`${title} video`} className="h-full w-full" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" loading="lazy" />
+      </div>
+    );
+  }
+  if (/\.(mp4|webm|mov)(\?|$)/i.test(candidate)) {
+    return <video src={candidate} controls preload="metadata" className="w-full rounded-2xl border bg-navy" />;
+  }
+  return null;
+}
+
+function ProjectDetail() {
+  const { id } = Route.useParams();
+  const valid = isValidUuid(id);
+  const { data: project, isLoading } = useQuery({ ...projectQuery(id), enabled: valid });
+
+  if (valid && isLoading) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 pb-16 pt-28">
+        <Skeleton className="aspect-video w-full rounded-2xl" />
+        <Skeleton className="mt-6 h-8 w-1/2" />
+      </div>
+    );
+  }
+  if (!valid || !project) {
+    return (
+      <div className="mx-auto max-w-3xl px-4 pb-16 pt-28">
+        <EmptyState title="Project not found" description="This project may have been removed or unpublished." action={<Button asChild variant="navy"><Link to="/projects">Back to projects</Link></Button>} />
+      </div>
+    );
+  }
+
+  const hasEmbed = !!(project.video_url || (project.project_url && embedUrl(project.project_url)));
+
+  return (
+    <article>
+      <div className="bg-navy-gradient pt-20 text-navy-foreground">
+        <div className="mx-auto max-w-5xl px-4 pb-10 pt-6 sm:px-6">
+          <Link to="/projects" className="inline-flex items-center gap-1.5 text-sm text-navy-foreground/70 hover:text-gold-warm">
+            <ArrowLeft className="h-4 w-4" /> All projects
+          </Link>
+          <div className="mt-5 flex flex-wrap items-center gap-2">
+            <DepartmentBadge departmentId={project.department_id} />
+            <span className="rounded-full bg-navy-foreground/10 px-2.5 py-0.5 text-[11px] font-semibold">{project.project_type}</span>
+          </div>
+          <h1 className="mt-3 text-3xl font-extrabold sm:text-5xl">{project.title}</h1>
+          {project.student && (
+            <Link to="/students/$id" params={{ id: project.student.id }} className="mt-5 inline-flex items-center gap-3 hover:text-gold-warm">
+              <StudentAvatar name={project.student.full_name} url={project.student.avatar_url} size="sm" />
+              <span className="font-semibold">{project.student.full_name}</span>
+            </Link>
+          )}
+        </div>
+      </div>
+      <div className="mx-auto max-w-5xl space-y-8 px-4 py-10 sm:px-6">
+        {hasEmbed ? (
+          <MediaPreview videoUrl={project.video_url} projectUrl={project.project_url} title={project.title} />
+        ) : (
+          <div className="aspect-[16/9] overflow-hidden rounded-2xl border shadow-soft">
+            <ProjectCover project={project} />
+          </div>
+        )}
+        <div className="grid gap-8 md:grid-cols-[1fr_260px]">
+          <div>
+            <h2 className="text-xl font-bold">About this project</h2>
+            <p className="mt-3 whitespace-pre-wrap leading-relaxed text-muted-foreground">{project.description ?? "No description provided."}</p>
+          </div>
+          <aside className="space-y-3">
+            {project.project_url && (
+              <Button asChild variant="gold" className="w-full">
+                <a href={project.project_url} target="_blank" rel="noopener noreferrer">
+                  Open project <ExternalLink className="h-4 w-4" />
+                </a>
+              </Button>
+            )}
+            {project.document_url && (
+              <Button asChild variant="outline" className="w-full">
+                <a href={project.document_url} target="_blank" rel="noopener noreferrer">
+                  <FileText className="h-4 w-4" /> View document
+                </a>
+              </Button>
+            )}
+          </aside>
+        </div>
+        {project.document_url && /\.pdf(\?|$)/i.test(project.document_url) && (
+          <iframe src={project.document_url} title={`${project.title} PDF`} className="h-[70vh] w-full rounded-2xl border" loading="lazy" />
+        )}
+      </div>
+    </article>
+  );
+}
