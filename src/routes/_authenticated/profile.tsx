@@ -70,7 +70,7 @@ function ProfilePage() {
       behance: f.get("behance") ?? "",
       linkedin: f.get("linkedin") ?? "",
     });
-    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message); return; }
     setSaving(true);
     const { error } = await supabase.rpc("update_my_profile", {
       _bio: parsed.data.bio,
@@ -80,7 +80,7 @@ function ProfilePage() {
       _linkedin_url: parsed.data.linkedin,
     });
     setSaving(false);
-    if (error) return toast.error("We couldn't save your profile. Please try again.");
+    if (error) { toast.error("We couldn't save your profile. Please try again."); return; }
     toast.success("Profile updated");
     queryClient.invalidateQueries();
   };

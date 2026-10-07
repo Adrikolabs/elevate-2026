@@ -67,7 +67,7 @@ function SettingsForm({ settings }: { settings: Settings }) {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
     const parsed = schema.safeParse(Object.fromEntries(f));
-    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message); return; }
     const newDate = new Date(parsed.data.graduation_date).toISOString();
     setSaving(true);
     const ok = await update(

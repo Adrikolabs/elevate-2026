@@ -27,11 +27,11 @@ function ResetPassword() {
   const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const password = String(new FormData(e.currentTarget).get("password") ?? "");
-    if (password.length < 8) return toast.error("Password must be at least 8 characters");
+    if (password.length < 8) { toast.error("Password must be at least 8 characters"); return; }
     setBusy(true);
     const { error } = await supabase.auth.updateUser({ password });
     setBusy(false);
-    if (error) return toast.error("We couldn't update your password. The link may have expired.");
+    if (error) { toast.error("We couldn't update your password. The link may have expired."); return; }
     toast.success("Password updated");
     navigate({ to: "/profile" });
   };

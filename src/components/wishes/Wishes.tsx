@@ -24,7 +24,7 @@ const wishSchema = z
 
 const EMOJIS = ["🎓", "🎉", "✨", "💛", "🚀", "👏", "🙌", "🌟", "❤️", "🥳", "💪", "🙏"];
 
-export function WishCard({ wish, onDelete }: { wish: Wish; onDelete?: () => void }) {
+export function WishCard({ wish, onDelete }: { wish: Wish; onDelete?: (() => void) | undefined }) {
   const name = wish.student?.full_name ?? "Elevate student";
   return (
     <article className="flex h-full flex-col rounded-2xl border bg-card p-5 shadow-soft">

@@ -35,7 +35,7 @@ function AdminMessages() {
 
   const toggle = async (w: Wish) => {
     const { error } = await supabase.from("graduation_messages").update({ is_approved: !w.is_approved }).eq("id", w.id);
-    if (error) return toast.error("We couldn't update this message.");
+    if (error) { toast.error("We couldn't update this message."); return; }
     await logAdminAction(w.is_approved ? "message_hidden" : "message_restored", "message", w.id, `Admin ${w.is_approved ? "hid" : "restored"} a message by ${w.student?.full_name}.`);
     refresh();
   };
@@ -43,7 +43,7 @@ function AdminMessages() {
   const remove = async (w: Wish) => {
     if (!confirm("Delete this message permanently?")) return;
     const { error } = await supabase.from("graduation_messages").delete().eq("id", w.id);
-    if (error) return toast.error("We couldn't delete this message.");
+    if (error) { toast.error("We couldn't delete this message."); return; }
     await logAdminAction("message_deleted", "message", w.id, `Admin deleted graduation message by ${w.student?.full_name}.`);
     toast.success("Message deleted");
     refresh();

@@ -50,7 +50,7 @@ function LoginPage() {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
     const email = emailSchema.safeParse(form.get("email"));
-    if (!email.success) return toast.error(email.error.issues[0]?.message);
+    if (!email.success) { toast.error(email.error.issues[0]?.message); return; }
 
     setBusy(true);
     try {
@@ -61,7 +61,7 @@ function LoginPage() {
         return;
       }
       const password = passwordSchema.safeParse(form.get("password"));
-      if (!password.success) return toast.error(password.error.issues[0]?.message);
+      if (!password.success) { toast.error(password.error.issues[0]?.message); return; }
       if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email: email.data, password: password.data });
         if (error) throw error;

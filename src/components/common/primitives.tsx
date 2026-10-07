@@ -39,7 +39,7 @@ export function StudentAvatar({
   className,
 }: {
   name: string;
-  url?: string | null;
+  url?: string | null | undefined;
   size?: "sm" | "md" | "lg" | "xl";
   className?: string;
 }) {

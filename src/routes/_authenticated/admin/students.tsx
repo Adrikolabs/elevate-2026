@@ -65,9 +65,9 @@ function AdminStudents() {
   };
 
   const patch = async (s: AdminStudent, values: Partial<Pick<AdminStudent, "is_active" | "is_nominee">>, description: string) => {
-    if (values.is_nominee && !s.is_active) return toast.error("Only active students can become nominees.");
+    if (values.is_nominee && !s.is_active) { toast.error("Only active students can become nominees."); return; }
     const { error } = await supabase.from("students").update(values).eq("id", s.id);
-    if (error) return toast.error("We couldn't update this student.");
+    if (error) { toast.error("We couldn't update this student."); return; }
     await logAdminAction("student_updated", "student", s.id, description);
     toast.success("Student updated");
     refresh();
@@ -202,7 +202,7 @@ function StudentDialog({ student, onClose, onSaved }: { student: AdminStudent | 
       department_id: dept,
       bio: f.get("bio") ?? "",
     });
-    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message); return; }
     const values = { ...parsed.data, student_code: parsed.data.student_code || null, bio: parsed.data.bio || null };
     setSaving(true);
     const { error } = student
@@ -210,7 +210,7 @@ function StudentDialog({ student, onClose, onSaved }: { student: AdminStudent | 
       : await supabase.from("students").insert(values);
     setSaving(false);
     if (error) {
-      return toast.error(error.code === "23505" ? "A student with this email or ID already exists." : "We couldn't save this student.");
+      { toast.error(error.code === "23505" ? "A student with this email or ID already exists." : "We couldn't save this student."); return; }
     }
     await logAdminAction(student ? "student_updated" : "student_added", "student", student?.id ?? null, `Admin ${student ? "updated" : "added"} ${values.full_name}.`);
     toast.success(student ? "Student updated" : "Student added");

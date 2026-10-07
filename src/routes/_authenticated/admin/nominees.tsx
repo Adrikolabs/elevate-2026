@@ -19,7 +19,7 @@ function AdminNominees() {
 
   const removeNominee = async (s: AdminStudent) => {
     const { error } = await supabase.from("students").update({ is_nominee: false }).eq("id", s.id);
-    if (error) return toast.error("We couldn't update this nominee.");
+    if (error) { toast.error("We couldn't update this nominee."); return; }
     await logAdminAction("nominee_removed", "student", s.id, `Admin unmarked ${s.full_name} as nominee.`);
     toast.success(`${s.full_name} removed from nominees`);
     queryClient.invalidateQueries({ queryKey: ["admin"] });
