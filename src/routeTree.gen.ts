@@ -10,33 +10,260 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as CountdownRouteImport } from './routes/countdown'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ResultsRouteImport } from './routes/results'
+import { Route as WishesRouteImport } from './routes/wishes'
+import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedVoteRouteImport } from './routes/_authenticated/vote'
+import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
+import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
+import { Route as StudentsIndexRouteImport } from './routes/students.index'
+import { Route as StudentsIdRouteImport } from './routes/students.$id'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminMessagesRouteImport } from './routes/_authenticated/admin/messages'
+import { Route as AuthenticatedAdminNomineesRouteImport } from './routes/_authenticated/admin/nominees'
+import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
+import { Route as AuthenticatedAdminStudentsRouteImport } from './routes/_authenticated/admin/students'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CountdownRoute = CountdownRouteImport.update({
+  id: '/countdown',
+  path: '/countdown',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsRoute = ResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WishesRoute = WishesRouteImport.update({
+  id: '/wishes',
+  path: '/wishes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedVoteRoute = AuthenticatedVoteRouteImport.update({
+  id: '/vote',
+  path: '/vote',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
+  id: '/projects/',
+  path: '/projects/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsIdRoute = ProjectsIdRouteImport.update({
+  id: '/projects/$id',
+  path: '/projects/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudentsIndexRoute = StudentsIndexRouteImport.update({
+  id: '/students/',
+  path: '/students/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudentsIdRoute = StudentsIdRouteImport.update({
+  id: '/students/$id',
+  path: '/students/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminMessagesRoute =
+  AuthenticatedAdminMessagesRouteImport.update({
+    id: '/messages',
+    path: '/messages',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminNomineesRoute =
+  AuthenticatedAdminNomineesRouteImport.update({
+    id: '/nominees',
+    path: '/nominees',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminSettingsRoute =
+  AuthenticatedAdminSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminStudentsRoute =
+  AuthenticatedAdminStudentsRouteImport.update({
+    id: '/students',
+    path: '/students',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/countdown': typeof CountdownRoute
+  '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/results': typeof ResultsRoute
+  '/wishes': typeof WishesRoute
+  '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/profile': typeof AuthenticatedProfileRoute
+  '/vote': typeof AuthenticatedVoteRoute
+  '/projects/$id': typeof ProjectsIdRoute
+  '/students/$id': typeof StudentsIdRoute
+  '/projects/': typeof ProjectsIndexRoute
+  '/students/': typeof StudentsIndexRoute
+  '/admin/messages': typeof AuthenticatedAdminMessagesRoute
+  '/admin/nominees': typeof AuthenticatedAdminNomineesRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/students': typeof AuthenticatedAdminStudentsRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/countdown': typeof CountdownRoute
+  '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/results': typeof ResultsRoute
+  '/wishes': typeof WishesRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/vote': typeof AuthenticatedVoteRoute
+  '/projects/$id': typeof ProjectsIdRoute
+  '/students/$id': typeof StudentsIdRoute
+  '/projects': typeof ProjectsIndexRoute
+  '/students': typeof StudentsIndexRoute
+  '/admin/messages': typeof AuthenticatedAdminMessagesRoute
+  '/admin/nominees': typeof AuthenticatedAdminNomineesRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/students': typeof AuthenticatedAdminStudentsRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/countdown': typeof CountdownRoute
+  '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/results': typeof ResultsRoute
+  '/wishes': typeof WishesRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/vote': typeof AuthenticatedVoteRoute
+  '/projects/$id': typeof ProjectsIdRoute
+  '/students/$id': typeof StudentsIdRoute
+  '/projects/': typeof ProjectsIndexRoute
+  '/students/': typeof StudentsIndexRoute
+  '/_authenticated/admin/messages': typeof AuthenticatedAdminMessagesRoute
+  '/_authenticated/admin/nominees': typeof AuthenticatedAdminNomineesRoute
+  '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/_authenticated/admin/students': typeof AuthenticatedAdminStudentsRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/countdown'
+    | '/login'
+    | '/reset-password'
+    | '/results'
+    | '/wishes'
+    | '/admin'
+    | '/profile'
+    | '/vote'
+    | '/projects/$id'
+    | '/students/$id'
+    | '/projects/'
+    | '/students/'
+    | '/admin/messages'
+    | '/admin/nominees'
+    | '/admin/settings'
+    | '/admin/students'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/countdown'
+    | '/login'
+    | '/reset-password'
+    | '/results'
+    | '/wishes'
+    | '/profile'
+    | '/vote'
+    | '/projects/$id'
+    | '/students/$id'
+    | '/projects'
+    | '/students'
+    | '/admin/messages'
+    | '/admin/nominees'
+    | '/admin/settings'
+    | '/admin/students'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/countdown'
+    | '/login'
+    | '/reset-password'
+    | '/results'
+    | '/wishes'
+    | '/_authenticated/admin'
+    | '/_authenticated/profile'
+    | '/_authenticated/vote'
+    | '/projects/$id'
+    | '/students/$id'
+    | '/projects/'
+    | '/students/'
+    | '/_authenticated/admin/messages'
+    | '/_authenticated/admin/nominees'
+    | '/_authenticated/admin/settings'
+    | '/_authenticated/admin/students'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  CountdownRoute: typeof CountdownRoute
+  LoginRoute: typeof LoginRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  ResultsRoute: typeof ResultsRoute
+  WishesRoute: typeof WishesRoute
+  ProjectsIdRoute: typeof ProjectsIdRoute
+  StudentsIdRoute: typeof StudentsIdRoute
+  ProjectsIndexRoute: typeof ProjectsIndexRoute
+  StudentsIndexRoute: typeof StudentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +275,184 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/countdown': {
+      id: '/countdown'
+      path: '/countdown'
+      fullPath: '/countdown'
+      preLoaderRoute: typeof CountdownRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results': {
+      id: '/results'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wishes': {
+      id: '/wishes'
+      path: '/wishes'
+      fullPath: '/wishes'
+      preLoaderRoute: typeof WishesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/vote': {
+      id: '/_authenticated/vote'
+      path: '/vote'
+      fullPath: '/vote'
+      preLoaderRoute: typeof AuthenticatedVoteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/projects/': {
+      id: '/projects/'
+      path: '/projects'
+      fullPath: '/projects/'
+      preLoaderRoute: typeof ProjectsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects/$id': {
+      id: '/projects/$id'
+      path: '/projects/$id'
+      fullPath: '/projects/$id'
+      preLoaderRoute: typeof ProjectsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/students/': {
+      id: '/students/'
+      path: '/students'
+      fullPath: '/students/'
+      preLoaderRoute: typeof StudentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/students/$id': {
+      id: '/students/$id'
+      path: '/students/$id'
+      fullPath: '/students/$id'
+      preLoaderRoute: typeof StudentsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/messages': {
+      id: '/_authenticated/admin/messages'
+      path: '/messages'
+      fullPath: '/admin/messages'
+      preLoaderRoute: typeof AuthenticatedAdminMessagesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/nominees': {
+      id: '/_authenticated/admin/nominees'
+      path: '/nominees'
+      fullPath: '/admin/nominees'
+      preLoaderRoute: typeof AuthenticatedAdminNomineesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/settings': {
+      id: '/_authenticated/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/students': {
+      id: '/_authenticated/admin/students'
+      path: '/students'
+      fullPath: '/admin/students'
+      preLoaderRoute: typeof AuthenticatedAdminStudentsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminMessagesRoute: typeof AuthenticatedAdminMessagesRoute
+  AuthenticatedAdminNomineesRoute: typeof AuthenticatedAdminNomineesRoute
+  AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
+  AuthenticatedAdminStudentsRoute: typeof AuthenticatedAdminStudentsRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
+  {
+    AuthenticatedAdminMessagesRoute: AuthenticatedAdminMessagesRoute,
+    AuthenticatedAdminNomineesRoute: AuthenticatedAdminNomineesRoute,
+    AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
+    AuthenticatedAdminStudentsRoute: AuthenticatedAdminStudentsRoute,
+    AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  }
+
+const AuthenticatedAdminRouteRouteWithChildren =
+  AuthenticatedAdminRouteRoute._addFileChildren(
+    AuthenticatedAdminRouteRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedVoteRoute: typeof AuthenticatedVoteRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedVoteRoute: AuthenticatedVoteRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  CountdownRoute: CountdownRoute,
+  LoginRoute: LoginRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  ResultsRoute: ResultsRoute,
+  WishesRoute: WishesRoute,
+  ProjectsIdRoute: ProjectsIdRoute,
+  StudentsIdRoute: StudentsIdRoute,
+  ProjectsIndexRoute: ProjectsIndexRoute,
+  StudentsIndexRoute: StudentsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

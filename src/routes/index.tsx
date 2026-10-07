@@ -1,24 +1,183 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowRight, Award, Camera, Code2, Cpu, Headphones, MessageSquareHeart, Palette, Sparkles, Vote } from "lucide-react";
+import heroImg from "@/assets/hero-graduation.jpg";
+import { departmentsQuery, projectsQuery, studentsQuery, wishesQuery } from "@/lib/data";
+import { Countdown } from "@/components/countdown/Countdown";
+import { ProjectCarousel } from "@/components/projects/ProjectCarousel";
+import { StudentCard } from "@/components/students/StudentCard";
+import { WishCard } from "@/components/wishes/Wishes";
+import { CardGridSkeleton, EmptyState, SectionHeading } from "@/components/common/primitives";
+import { Button } from "@/components/ui/button";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Elevate Academy Class of December 2026 Celebration Portal" },
+      {
+        name: "description",
+        content: "Celebrating Creativity, Growth, Achievement and the Next Generation of Talent. Count down to graduation, explore projects and vote.",
+      },
+      { property: "og:title", content: "Elevate Academy Class of December 2026 Celebration Portal" },
+      { property: "og:description", content: "Count down to graduation, explore student projects, vote and leave graduation wishes." },
+    ],
+  }),
+  component: HomePage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+const DEPT_ICONS: Record<string, typeof Code2> = {
+  "virtual-assistant": Headphones,
+  "graphics-design": Palette,
+  "website-development": Code2,
+  "film-photography": Camera,
+  "motion-graphics": Sparkles,
+  "computer-science": Cpu,
+};
+
+function HomePage() {
+  const projects = useQuery(projectsQuery);
+  const students = useQuery(studentsQuery);
+  const departments = useQuery(departmentsQuery);
+  const wishes = useQuery(wishesQuery(6));
+
+  const featured = (projects.data ?? []).filter((p) => p.is_featured);
+  const sliderProjects = featured.length >= 3 ? featured : (projects.data ?? []).slice(0, 8);
+  const projectCounts = new Map<string, number>();
+  (projects.data ?? []).forEach((p) => projectCounts.set(p.student_id, (projectCounts.get(p.student_id) ?? 0) + 1));
+  const featuredStudents = (students.data ?? []).filter((s) => s.is_nominee).slice(0, 6);
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <>
+      {/* Hero */}
+      <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden text-navy-foreground">
+        <img src={heroImg} alt="" width={1920} height={1088} className="absolute inset-0 -z-20 h-full w-full object-cover" />
+        <div className="absolute inset-0 -z-10 bg-hero-overlay" />
+        <div className="mx-auto w-full max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8">
+          <div className="max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <p className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-navy/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-gold-warm backdrop-blur">
+              <Award className="h-4 w-4" aria-hidden /> Graduation Celebration Portal
+            </p>
+            <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] sm:text-6xl lg:text-7xl">
+              Elevate Academy <span className="text-gold-gradient">Class of December 2026</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-navy-foreground/80 sm:text-xl">
+              Celebrating talent, creativity, learning and achievement.
+            </p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Button asChild variant="gold" size="lg">
+                <Link to="/projects">Explore Student Projects <ArrowRight className="h-5 w-5" /></Link>
+              </Button>
+              <Button asChild variant="glass" size="lg">
+                <Link to="/vote"><Vote className="h-5 w-5" /> Vote for Your Favorite Student</Link>
+              </Button>
+            </div>
+          </div>
+          <div id="countdown" className="mt-14 max-w-3xl scroll-mt-24">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-navy-foreground/70">Counting down to graduation</p>
+            <Countdown variant="dark" />
+          </div>
+        </div>
+      </section>
+
+      {/* Featured projects */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeading
+          eyebrow="Showcase"
+          title="Featured Student Projects"
+          description="A glimpse of the final projects our graduates are proudest of."
+          action={
+            <Button asChild variant="outline">
+              <Link to="/projects">View all projects <ArrowRight className="h-4 w-4" /></Link>
+            </Button>
+          }
+        />
+        {projects.isLoading ? (
+          <CardGridSkeleton count={3} />
+        ) : sliderProjects.length ? (
+          <ProjectCarousel projects={sliderProjects} />
+        ) : (
+          <EmptyState title="No projects have been added yet." />
+        )}
+      </section>
+
+      {/* Departments */}
+      <section className="bg-navy-gradient py-20 text-navy-foreground">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gold-warm">Programs</p>
+          <h2 className="mt-2 text-2xl font-extrabold sm:text-3xl">Six departments, one graduating class</h2>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {(departments.data ?? []).map((d) => {
+              const Icon = DEPT_ICONS[d.slug] ?? Award;
+              return (
+                <Link
+                  key={d.id}
+                  to="/projects"
+                  search={{ department: d.slug }}
+                  className="group rounded-2xl border border-navy-foreground/10 bg-navy-foreground/5 p-6 transition-all hover:-translate-y-1 hover:border-gold/50 hover:bg-navy-foreground/10"
+                >
+                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold/15 text-gold-warm">
+                    <Icon className="h-5 w-5" aria-hidden />
+                  </span>
+                  <h3 className="mt-4 text-lg font-bold">{d.name}</h3>
+                  <p className="mt-1 text-sm text-navy-foreground/70">{d.description}</p>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-gold-warm">
+                    See projects <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Featured students */}
+      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <SectionHeading
+          eyebrow="Graduates"
+          title="Meet Our Award Nominees"
+          action={
+            <Button asChild variant="outline">
+              <Link to="/students">All students <ArrowRight className="h-4 w-4" /></Link>
+            </Button>
+          }
+        />
+        {students.isLoading ? (
+          <CardGridSkeleton count={3} />
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredStudents.map((s) => (
+              <StudentCard key={s.id} student={s} projectCount={projectCounts.get(s.id) ?? 0} />
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* Wishes preview */}
+      <section className="bg-secondary/60 py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <SectionHeading
+            eyebrow="Wall of Wishes"
+            title="Graduation Wishes"
+            description="Congratulations, memories and inspiration from the Class of December 2026."
+            action={
+              <Button asChild variant="navy">
+                <Link to="/wishes"><MessageSquareHeart className="h-4 w-4" /> Leave a wish</Link>
+              </Button>
+            }
+          />
+          {wishes.isLoading ? (
+            <CardGridSkeleton count={3} />
+          ) : wishes.data?.length ? (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {wishes.data.map((w) => (
+                <WishCard key={w.id} wish={w} />
+              ))}
+            </div>
+          ) : (
+            <EmptyState icon={MessageSquareHeart} title="No graduation wishes yet. Be the first to leave one!" />
+          )}
+        </div>
+      </section>
+    </>
   );
 }
