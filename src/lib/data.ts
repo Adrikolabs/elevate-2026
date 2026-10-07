@@ -35,9 +35,15 @@ export type Project = {
   project_url: string | null;
   video_url: string | null;
   document_url: string | null;
+  short_description: string | null;
+  tools_used: string[];
+  submission_status: "draft" | "pending" | "approved" | "rejected";
+  admin_feedback: string | null;
+  submitted_at: string | null;
   is_featured: boolean;
   is_published: boolean;
   created_at: string;
+  updated_at: string;
   student: { id: string; full_name: string; avatar_url: string | null } | null;
 };
 
@@ -60,7 +66,7 @@ export type Wish = {
   student: { id: string; full_name: string; avatar_url: string | null; department_id: string | null } | null;
 };
 
-const PROJECT_SELECT = `id, student_id, department_id, title, description, cover_image_url, project_type, project_url, video_url, document_url, is_featured, is_published, created_at, student:students(id, full_name, avatar_url)`;
+export const PROJECT_SELECT = `id, student_id, department_id, title, short_description, description, cover_image_url, project_type, project_url, video_url, document_url, tools_used, submission_status, admin_feedback, submitted_at, is_featured, is_published, created_at, updated_at, student:students(id, full_name, avatar_url)`;
 
 export const settingsQuery = queryOptions({
   queryKey: ["settings"],
@@ -126,6 +132,7 @@ export const projectsQuery = queryOptions({
       .from("projects")
       .select(PROJECT_SELECT)
       .eq("is_published", true)
+      .eq("submission_status", "approved")
       .order("is_featured", { ascending: false })
       .order("created_at", { ascending: false });
     if (error) throw error;
@@ -139,6 +146,23 @@ export const projectQuery = (id: string) =>
     queryKey: ["project", id],
     queryFn: async (): Promise<Project | null> => {
       const { data, error } = await supabase.from("projects").select(PROJECT_SELECT).eq("id", id).maybeSingle();
+      if (error) throw error;
+      return data as unknown as Project | null;
+    },
+  });
+
+/** The signed-in student's own project (any status). RLS only returns rows they own. */
+export const myProjectQuery = (studentId: string) =>
+  queryOptions({
+    queryKey: ["my-project", studentId],
+    queryFn: async (): Promise<Project | null> => {
+      const { data, error } = await supabase
+        .from("projects")
+        .select(PROJECT_SELECT)
+        .eq("student_id", studentId)
+        .order("created_at")
+        .limit(1)
+        .maybeSingle();
       if (error) throw error;
       return data as unknown as Project | null;
     },
