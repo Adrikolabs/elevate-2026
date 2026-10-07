@@ -11,6 +11,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 export const Route = createFileRoute("/students/$id")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Student Profile — Elevate Academy Class of Dec 2026" },
       { name: "description", content: "Profile and projects of an Elevate Academy Class of December 2026 graduate." },
       { property: "og:title", content: "Student Profile — Elevate Academy" },

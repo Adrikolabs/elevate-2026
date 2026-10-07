@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label";
 export const Route = createFileRoute("/reset-password")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Set a New Password — Elevate Academy Portal" },
       { name: "description", content: "Choose a new password for your Elevate Academy portal account." },
       { property: "og:title", content: "Set a New Password — Elevate Academy" },

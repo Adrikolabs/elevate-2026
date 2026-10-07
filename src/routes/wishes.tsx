@@ -12,6 +12,8 @@ import { CardGridSkeleton, EmptyState, PageHeader } from "@/components/common/pr
 export const Route = createFileRoute("/wishes")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Wall of Wishes — Elevate Academy Class of Dec 2026" },
       { name: "description", content: "Graduation wishes, memories and congratulations from Elevate Academy students." },
       { property: "og:title", content: "Wall of Wishes — Elevate Academy" },

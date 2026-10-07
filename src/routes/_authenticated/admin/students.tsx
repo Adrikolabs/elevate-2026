@@ -30,6 +30,16 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/_authenticated/admin/students")({
+  head: () => ({
+    meta: [
+      { title: "Manage Students — Elevate Academy" },
+      { name: "description", content: "Manage registered students for the Elevate Academy graduation portal." },
+      { property: "og:title", content: "Manage Students — Elevate Academy" },
+      { property: "og:description", content: "Manage registered students for the Elevate Academy graduation portal." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: AdminStudents,
 });
 

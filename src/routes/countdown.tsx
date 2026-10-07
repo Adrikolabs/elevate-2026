@@ -6,6 +6,8 @@ import { Countdown } from "@/components/countdown/Countdown";
 export const Route = createFileRoute("/countdown")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Graduation Countdown — Elevate Academy Class of Dec 2026" },
       { name: "description", content: "Live countdown to the Elevate Academy Class of December 2026 graduation ceremony." },
       { property: "og:title", content: "Graduation Countdown — Elevate Academy" },

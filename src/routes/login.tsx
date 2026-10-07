@@ -15,6 +15,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export const Route = createFileRoute("/login")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Student Login — Elevate Academy Graduation Portal" },
       { name: "description", content: "Sign in with your registered Elevate Academy email to vote and post graduation wishes." },
       { property: "og:title", content: "Student Login — Elevate Academy" },

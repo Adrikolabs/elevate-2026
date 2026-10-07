@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/students/")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Graduating Students — Elevate Academy Class of Dec 2026" },
       { name: "description", content: "Meet the graduating students of Elevate Academy across all six departments." },
       { property: "og:title", content: "Graduating Students — Elevate Academy" },

@@ -11,6 +11,16 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated/admin/messages")({
+  head: () => ({
+    meta: [
+      { title: "Moderate Wishes — Elevate Academy" },
+      { name: "description", content: "Review and moderate Elevate Academy graduation wishes." },
+      { property: "og:title", content: "Moderate Wishes — Elevate Academy" },
+      { property: "og:description", content: "Review and moderate Elevate Academy graduation wishes." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: AdminMessages,
 });
 

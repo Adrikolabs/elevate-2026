@@ -25,6 +25,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 export const Route = createFileRoute("/_authenticated/vote")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Vote — Elevate Academy Graduation Awards" },
       { name: "description", content: "Vote for your favourite student in your own department." },
       { property: "og:title", content: "Vote — Elevate Academy Graduation Awards" },

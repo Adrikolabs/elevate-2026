@@ -8,6 +8,16 @@ import { useDepartmentMap } from "@/components/common/primitives";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
+  head: () => ({
+    meta: [
+      { title: "Admin Overview — Elevate Academy" },
+      { name: "description", content: "Review student registration, projects and graduation voting participation." },
+      { property: "og:title", content: "Admin Overview — Elevate Academy" },
+      { property: "og:description", content: "Review student registration, projects and graduation voting participation." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: AdminDashboard,
 });
 

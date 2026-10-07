@@ -17,6 +17,8 @@ export const Route = createFileRoute("/projects/")({
   validateSearch: (s) => searchSchema.parse(s),
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Student Projects — Elevate Academy Class of Dec 2026" },
       { name: "description", content: "Browse final projects from Elevate Academy graduates across all six departments." },
       { property: "og:title", content: "Student Projects — Elevate Academy" },
