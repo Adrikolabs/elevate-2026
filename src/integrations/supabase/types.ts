@@ -168,6 +168,7 @@ export type Database = {
       }
       projects: {
         Row: {
+          admin_feedback: string | null
           cover_image_url: string | null
           created_at: string
           department_id: string
@@ -178,12 +179,18 @@ export type Database = {
           is_published: boolean
           project_type: string
           project_url: string | null
+          reviewed_at: string | null
+          short_description: string | null
           student_id: string
+          submission_status: string
+          submitted_at: string | null
           title: string
+          tools_used: string[]
           updated_at: string
           video_url: string | null
         }
         Insert: {
+          admin_feedback?: string | null
           cover_image_url?: string | null
           created_at?: string
           department_id: string
@@ -194,12 +201,18 @@ export type Database = {
           is_published?: boolean
           project_type?: string
           project_url?: string | null
+          reviewed_at?: string | null
+          short_description?: string | null
           student_id: string
+          submission_status?: string
+          submitted_at?: string | null
           title: string
+          tools_used?: string[]
           updated_at?: string
           video_url?: string | null
         }
         Update: {
+          admin_feedback?: string | null
           cover_image_url?: string | null
           created_at?: string
           department_id?: string
@@ -210,8 +223,13 @@ export type Database = {
           is_published?: boolean
           project_type?: string
           project_url?: string | null
+          reviewed_at?: string | null
+          short_description?: string | null
           student_id?: string
+          submission_status?: string
+          submitted_at?: string | null
           title?: string
+          tools_used?: string[]
           updated_at?: string
           video_url?: string | null
         }
@@ -440,6 +458,21 @@ export type Database = {
         }
         Returns: boolean
       }
+      save_my_project: {
+        Args: {
+          _cover_image_url: string
+          _description: string
+          _document_url: string
+          _project_type: string
+          _project_url: string
+          _short_description: string
+          _submit: boolean
+          _title: string
+          _tools_used: string[]
+        }
+        Returns: Json
+      }
+      set_my_headshot: { Args: { _path: string }; Returns: undefined }
       update_my_profile: {
         Args: {
           _behance_url: string
