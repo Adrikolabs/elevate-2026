@@ -25,6 +25,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 export const Route = createFileRoute("/_authenticated/vote")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Vote — Elevate Academy Graduation Awards" },
       { name: "description", content: "Vote for your favourite student in your own department." },
       { property: "og:title", content: "Vote — Elevate Academy Graduation Awards" },
@@ -90,7 +92,7 @@ function VotePage() {
     }
     setSuccess(selected.full_name);
     setSelected(null);
-    confetti({ particleCount: 160, spread: 90, colors: ["#D4AF37", "#F2C94C", "#123B70", "#FFFFFF"], origin: { y: 0.5 } });
+    confetti({ particleCount: 160, spread: 90, colors: getComputedStyle(document.documentElement).getPropertyValue("--confetti-colors").split(",").map((color) => color.trim()), origin: { y: 0.5 } });
     queryClient.invalidateQueries({ queryKey: ["me"] });
   };
 

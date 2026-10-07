@@ -9,6 +9,16 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated/admin/nominees")({
+  head: () => ({
+    meta: [
+      { title: "Manage Nominees — Elevate Academy" },
+      { name: "description", content: "Manage department nominees for the Elevate Academy graduation awards." },
+      { property: "og:title", content: "Manage Nominees — Elevate Academy" },
+      { property: "og:description", content: "Manage department nominees for the Elevate Academy graduation awards." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: AdminNominees,
 });
 

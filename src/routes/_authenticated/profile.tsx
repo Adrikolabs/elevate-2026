@@ -19,6 +19,8 @@ import { Textarea } from "@/components/ui/textarea";
 export const Route = createFileRoute("/_authenticated/profile")({
   head: () => ({
     meta: [
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "My Dashboard — Elevate Academy Graduation Portal" },
       { name: "description", content: "Your Elevate Academy graduation dashboard: profile, department and voting status." },
       { property: "og:title", content: "My Dashboard — Elevate Academy" },

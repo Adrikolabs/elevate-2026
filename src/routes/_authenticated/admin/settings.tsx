@@ -25,6 +25,16 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/_authenticated/admin/settings")({
+  head: () => ({
+    meta: [
+      { title: "Graduation Settings — Elevate Academy" },
+      { name: "description", content: "Manage Elevate Academy ceremony details and portal controls." },
+      { property: "og:title", content: "Graduation Settings — Elevate Academy" },
+      { property: "og:description", content: "Manage Elevate Academy ceremony details and portal controls." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: SettingsPage,
 });
 
