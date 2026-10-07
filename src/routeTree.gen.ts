@@ -10,9 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as CountdownRouteImport } from './routes/countdown'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ResultsRouteImport } from './routes/results'
 import { Route as WishesRouteImport } from './routes/wishes'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedVoteRouteImport } from './routes/_authenticated/vote'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as StudentsIndexRouteImport } from './routes/students.index'
@@ -23,9 +28,23 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CountdownRoute = CountdownRouteImport.update({
   id: '/countdown',
   path: '/countdown',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResultsRoute = ResultsRouteImport.update({
@@ -37,6 +56,16 @@ const WishesRoute = WishesRouteImport.update({
   id: '/wishes',
   path: '/wishes',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedVoteRoute = AuthenticatedVoteRouteImport.update({
+  id: '/vote',
+  path: '/vote',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   id: '/projects/',
@@ -62,8 +91,12 @@ const StudentsIdRoute = StudentsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/countdown': typeof CountdownRoute
+  '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
   '/wishes': typeof WishesRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/vote': typeof AuthenticatedVoteRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/students/$id': typeof StudentsIdRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -72,8 +105,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/countdown': typeof CountdownRoute
+  '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
   '/wishes': typeof WishesRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/vote': typeof AuthenticatedVoteRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/students/$id': typeof StudentsIdRoute
   '/projects': typeof ProjectsIndexRoute
@@ -82,9 +119,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/countdown': typeof CountdownRoute
+  '/login': typeof LoginRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
   '/wishes': typeof WishesRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/vote': typeof AuthenticatedVoteRoute
   '/projects/$id': typeof ProjectsIdRoute
   '/students/$id': typeof StudentsIdRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -95,8 +137,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/countdown'
+    | '/login'
+    | '/reset-password'
     | '/results'
     | '/wishes'
+    | '/profile'
+    | '/vote'
     | '/projects/$id'
     | '/students/$id'
     | '/projects/'
@@ -105,8 +151,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/countdown'
+    | '/login'
+    | '/reset-password'
     | '/results'
     | '/wishes'
+    | '/profile'
+    | '/vote'
     | '/projects/$id'
     | '/students/$id'
     | '/projects'
@@ -114,9 +164,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/countdown'
+    | '/login'
+    | '/reset-password'
     | '/results'
     | '/wishes'
+    | '/_authenticated/profile'
+    | '/_authenticated/vote'
     | '/projects/$id'
     | '/students/$id'
     | '/projects/'
@@ -125,7 +180,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   CountdownRoute: typeof CountdownRoute
+  LoginRoute: typeof LoginRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ResultsRoute: typeof ResultsRoute
   WishesRoute: typeof WishesRoute
   ProjectsIdRoute: typeof ProjectsIdRoute
@@ -143,11 +201,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/countdown': {
       id: '/countdown'
       path: '/countdown'
       fullPath: '/countdown'
       preLoaderRoute: typeof CountdownRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/results': {
@@ -163,6 +242,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/wishes'
       preLoaderRoute: typeof WishesRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/vote': {
+      id: '/_authenticated/vote'
+      path: '/vote'
+      fullPath: '/vote'
+      preLoaderRoute: typeof AuthenticatedVoteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/projects/': {
       id: '/projects/'
@@ -195,9 +288,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedVoteRoute: typeof AuthenticatedVoteRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedVoteRoute: AuthenticatedVoteRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   CountdownRoute: CountdownRoute,
+  LoginRoute: LoginRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ResultsRoute: ResultsRoute,
   WishesRoute: WishesRoute,
   ProjectsIdRoute: ProjectsIdRoute,
