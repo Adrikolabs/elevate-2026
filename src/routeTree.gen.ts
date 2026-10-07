@@ -24,7 +24,10 @@ import { Route as ProjectsIdRouteImport } from './routes/projects.$id'
 import { Route as StudentsIndexRouteImport } from './routes/students.index'
 import { Route as StudentsIdRouteImport } from './routes/students.$id'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedAdminMessagesRouteImport } from './routes/_authenticated/admin/messages'
+import { Route as AuthenticatedAdminNomineesRouteImport } from './routes/_authenticated/admin/nominees'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
+import { Route as AuthenticatedAdminStudentsRouteImport } from './routes/_authenticated/admin/students'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -100,10 +103,28 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminMessagesRoute =
+  AuthenticatedAdminMessagesRouteImport.update({
+    id: '/messages',
+    path: '/messages',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminNomineesRoute =
+  AuthenticatedAdminNomineesRouteImport.update({
+    id: '/nominees',
+    path: '/nominees',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminSettingsRoute =
   AuthenticatedAdminSettingsRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminStudentsRoute =
+  AuthenticatedAdminStudentsRouteImport.update({
+    id: '/students',
+    path: '/students',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 
@@ -121,7 +142,10 @@ export interface FileRoutesByFullPath {
   '/students/$id': typeof StudentsIdRoute
   '/projects/': typeof ProjectsIndexRoute
   '/students/': typeof StudentsIndexRoute
+  '/admin/messages': typeof AuthenticatedAdminMessagesRoute
+  '/admin/nominees': typeof AuthenticatedAdminNomineesRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/students': typeof AuthenticatedAdminStudentsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -137,7 +161,10 @@ export interface FileRoutesByTo {
   '/students/$id': typeof StudentsIdRoute
   '/projects': typeof ProjectsIndexRoute
   '/students': typeof StudentsIndexRoute
+  '/admin/messages': typeof AuthenticatedAdminMessagesRoute
+  '/admin/nominees': typeof AuthenticatedAdminNomineesRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/students': typeof AuthenticatedAdminStudentsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -156,7 +183,10 @@ export interface FileRoutesById {
   '/students/$id': typeof StudentsIdRoute
   '/projects/': typeof ProjectsIndexRoute
   '/students/': typeof StudentsIndexRoute
+  '/_authenticated/admin/messages': typeof AuthenticatedAdminMessagesRoute
+  '/_authenticated/admin/nominees': typeof AuthenticatedAdminNomineesRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/_authenticated/admin/students': typeof AuthenticatedAdminStudentsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -175,7 +205,10 @@ export interface FileRouteTypes {
     | '/students/$id'
     | '/projects/'
     | '/students/'
+    | '/admin/messages'
+    | '/admin/nominees'
     | '/admin/settings'
+    | '/admin/students'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -191,7 +224,10 @@ export interface FileRouteTypes {
     | '/students/$id'
     | '/projects'
     | '/students'
+    | '/admin/messages'
+    | '/admin/nominees'
     | '/admin/settings'
+    | '/admin/students'
     | '/admin'
   id:
     | '__root__'
@@ -209,7 +245,10 @@ export interface FileRouteTypes {
     | '/students/$id'
     | '/projects/'
     | '/students/'
+    | '/_authenticated/admin/messages'
+    | '/_authenticated/admin/nominees'
     | '/_authenticated/admin/settings'
+    | '/_authenticated/admin/students'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -334,6 +373,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/messages': {
+      id: '/_authenticated/admin/messages'
+      path: '/messages'
+      fullPath: '/admin/messages'
+      preLoaderRoute: typeof AuthenticatedAdminMessagesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/nominees': {
+      id: '/_authenticated/admin/nominees'
+      path: '/nominees'
+      fullPath: '/admin/nominees'
+      preLoaderRoute: typeof AuthenticatedAdminNomineesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/settings': {
       id: '/_authenticated/admin/settings'
       path: '/settings'
@@ -341,17 +394,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/students': {
+      id: '/_authenticated/admin/students'
+      path: '/students'
+      fullPath: '/admin/students'
+      preLoaderRoute: typeof AuthenticatedAdminStudentsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminMessagesRoute: typeof AuthenticatedAdminMessagesRoute
+  AuthenticatedAdminNomineesRoute: typeof AuthenticatedAdminNomineesRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
+  AuthenticatedAdminStudentsRoute: typeof AuthenticatedAdminStudentsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
+    AuthenticatedAdminMessagesRoute: AuthenticatedAdminMessagesRoute,
+    AuthenticatedAdminNomineesRoute: AuthenticatedAdminNomineesRoute,
     AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
+    AuthenticatedAdminStudentsRoute: AuthenticatedAdminStudentsRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   }
 
