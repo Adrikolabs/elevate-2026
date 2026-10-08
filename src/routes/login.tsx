@@ -6,6 +6,7 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/lib/auth";
+import { requestActivation } from "@/lib/activation.functions";
 import { Logo } from "@/components/common/primitives";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,6 +44,7 @@ function LoginPage() {
   const [busy, setBusy] = useState(false);
   const [sentTo, setSentTo] = useState<string | null>(null);
   const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
+  const [notice, setNotice] = useState<{ title: string; body: string } | null>(null);
 
   useEffect(() => {
     if (ready && user) navigate({ to: "/profile", replace: true });
@@ -62,20 +64,29 @@ function LoginPage() {
         setSentTo(email.data);
         return;
       }
+      if (mode === "signup") {
+        const studentId = String(form.get("student_id") ?? "").trim();
+        if (!studentId) { toast.error("Enter your Student ID"); return; }
+        setNotice(null);
+        const res = await requestActivation({ data: { email: email.data, studentId, origin: window.location.origin } });
+        if (res.status === "sent") { setSentTo(email.data); return; }
+        setNotice(
+          res.status === "not_registered"
+            ? { title: "Student Not Registered", body: "We could not verify your details in the Elevate Academy student list. Please contact the administrator." }
+            : res.status === "inactive"
+              ? { title: "Account inactive", body: "Your Elevate Academy student account is currently inactive. Please contact the administrator." }
+              : res.status === "already_active"
+                ? { title: "Account already activated", body: "Sign in with your email and password, or use Forgot password to set a new one." }
+                : { title: "Something went wrong", body: "We couldn't send your activation email. Please try again shortly." },
+        );
+        return;
+      }
       const password = passwordSchema.safeParse(form.get("password"));
       if (!password.success) { toast.error(password.error.issues[0]?.message); return; }
-      if (mode === "signin") {
+      {
         const { error } = await supabase.auth.signInWithPassword({ email: email.data, password: password.data });
         if (error) throw error;
         toast.success("Welcome back!");
-      } else {
-        const { data, error } = await supabase.auth.signUp({
-          email: email.data,
-          password: password.data,
-          options: { emailRedirectTo: `${window.location.origin}/profile` },
-        });
-        if (error) throw error;
-        if (!data.session) setSentTo(email.data);
       }
     } catch (err) {
       toast.error(friendlyAuthError(err instanceof Error ? err.message : ""));
@@ -99,7 +110,7 @@ function LoginPage() {
             <MailCheck className="mx-auto h-12 w-12 text-gold" aria-hidden />
             <h1 className="mt-4 text-2xl font-bold">Check your email</h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              We sent a link to <strong className="text-foreground">{sentTo}</strong>. Open it to {mode === "forgot" ? "reset your password" : "confirm your account"}.
+              We sent a link to <strong className="text-foreground">{sentTo}</strong>. Open it to {mode === "forgot" ? "reset your password" : "create your password and activate your account"}.
             </p>
             <Button variant="outline" className="mt-6" onClick={() => { setSentTo(null); setMode("signin"); }}>
               Back to sign in
@@ -114,10 +125,10 @@ function LoginPage() {
               Use the email address registered with Elevate Academy.
             </p>
             {mode !== "forgot" ? (
-              <Tabs value={mode} onValueChange={(v) => setMode(v as "signin" | "signup")} className="mt-6">
+              <Tabs value={mode} onValueChange={(v) => { setMode(v as "signin" | "signup"); setNotice(null); }} className="mt-6">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="signin">Sign in</TabsTrigger>
-                  <TabsTrigger value="signup">Activate account</TabsTrigger>
+                  <TabsTrigger value="signup">First time? Activate</TabsTrigger>
                 </TabsList>
                 <TabsContent value={mode}>
                   <form onSubmit={handle} className="mt-4 space-y-4" noValidate>
@@ -125,24 +136,37 @@ function LoginPage() {
                       <Label htmlFor="email">Email</Label>
                       <Input id="email" name="email" type="email" autoComplete="email" required />
                     </div>
+                    {mode === "signin" ? (
                     <div className="space-y-1.5">
                       <div className="flex items-center justify-between">
-                        <Label htmlFor="password">{mode === "signup" ? "Create a password" : "Password"}</Label>
+                        <Label htmlFor="password">Password</Label>
                         {mode === "signin" && (
                           <button type="button" className="text-xs font-medium text-royal hover:underline" onClick={() => setMode("forgot")}>
                             Forgot password?
                           </button>
                         )}
                       </div>
-                      <Input id="password" name="password" type="password" autoComplete={mode === "signup" ? "new-password" : "current-password"} required minLength={8} />
+                      <Input id="password" name="password" type="password" autoComplete="current-password" required minLength={8} />
                     </div>
+                    ) : (
+                      <div className="space-y-1.5">
+                        <Label htmlFor="student_id">Student ID</Label>
+                        <Input id="student_id" name="student_id" autoComplete="off" placeholder="e.g. ELV2026001" required maxLength={40} />
+                      </div>
+                    )}
                     {mode === "signup" && (
                       <p className="text-xs text-muted-foreground">
-                        First time here? Your email must already be registered by Elevate Academy to get student access.
+                        First time here? Enter the email and Student ID registered by Elevate Academy. We'll email you a secure link to create your password.
                       </p>
                     )}
+                    {notice && (
+                      <div role="alert" className="rounded-xl border border-destructive/30 bg-destructive/5 p-3 text-sm">
+                        <p className="font-bold text-destructive">{notice.title}</p>
+                        <p className="mt-0.5 text-muted-foreground">{notice.body}</p>
+                      </div>
+                    )}
                     <Button type="submit" variant="navy" className="w-full" disabled={busy}>
-                      {busy && <Loader2 className="h-4 w-4 animate-spin" />} {mode === "signin" ? "Sign in" : "Activate account"}
+                      {busy && <Loader2 className="h-4 w-4 animate-spin" />} {mode === "signin" ? "Sign in" : "Send activation link"}
                     </Button>
                   </form>
                 </TabsContent>

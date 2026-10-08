@@ -3,15 +3,15 @@ import { supabase } from "@/integrations/supabase/client";
 
 // Students' email/phone are not readable by the public; always select explicit columns.
 export const STUDENT_PUBLIC_COLUMNS =
-  "id, student_code, full_name, department_id, avatar_url, bio, graduation_year, portfolio_url, github_url, behance_url, linkedin_url, is_nominee, is_active, is_demo";
+  "id, full_name, department_id, hub_id, avatar_url, bio, graduation_year, portfolio_url, github_url, behance_url, linkedin_url, is_nominee, is_active, is_demo";
 
 export type Department = { id: string; name: string; slug: string; description: string | null };
 
 export type PublicStudent = {
   id: string;
-  student_code: string | null;
   full_name: string;
   department_id: string | null;
+  hub_id: string | null;
   avatar_url: string | null;
   bio: string | null;
   graduation_year: number;
@@ -91,6 +91,18 @@ export const departmentsQuery = queryOptions({
       .from("departments")
       .select("id, name, slug, description")
       .order("name");
+    if (error) throw error;
+    return data;
+  },
+  staleTime: 5 * 60_000,
+});
+
+export type Hub = { id: string; name: string; slug: string; description: string | null; is_active: boolean };
+
+export const hubsQuery = queryOptions({
+  queryKey: ["hubs"],
+  queryFn: async (): Promise<Hub[]> => {
+    const { data, error } = await supabase.from("hubs").select("id, name, slug, description, is_active").order("name");
     if (error) throw error;
     return data;
   },
