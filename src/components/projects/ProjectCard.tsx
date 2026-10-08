@@ -1,13 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, Star } from "lucide-react";
+import { ArrowUpRight, ExternalLink, FileText, Star } from "lucide-react";
+import { toast } from "sonner";
 import type { Project } from "@/lib/data";
-import { DepartmentBadge } from "@/components/common/primitives";
+import { openStoredFile, parseStorageRef, useFileUrl } from "@/lib/storage";
+import { DepartmentBadge, StudentAvatar } from "@/components/common/primitives";
 import { cn } from "@/lib/utils";
 
 export function ProjectCover({ project, className }: { project: Pick<Project, "cover_image_url" | "title">; className?: string }) {
-  return project.cover_image_url ? (
+  const src = useFileUrl(project.cover_image_url);
+  return src ? (
     <img
-      src={project.cover_image_url}
+      src={src}
       alt={`Cover image for ${project.title}`}
       loading="lazy"
       width={1280}
@@ -21,7 +24,26 @@ export function ProjectCover({ project, className }: { project: Pick<Project, "c
   );
 }
 
+/** Opens a project PDF in a new tab without downloading it. */
+export function PdfLink({ value, className, children }: { value: string; className?: string; children: React.ReactNode }) {
+  if (!parseStorageRef(value)) {
+    return <a href={value} target="_blank" rel="noopener noreferrer" className={className}>{children}</a>;
+  }
+  return (
+    <button
+      type="button"
+      className={className}
+      onClick={() => openStoredFile(value).catch(() => toast.error("This PDF isn't available right now."))}
+    >
+      {children}
+    </button>
+  );
+}
+
+const actionClass = "inline-flex items-center gap-1 text-sm font-semibold text-foreground underline-offset-4 hover:text-royal hover:underline";
+
 export function ProjectCard({ project }: { project: Project }) {
+  const summary = project.short_description ?? project.description;
   return (
     <article
       className={cn(
@@ -43,16 +65,27 @@ export function ProjectCard({ project }: { project: Project }) {
       <div className="flex flex-1 flex-col p-5">
         <DepartmentBadge departmentId={project.department_id} className="self-start" />
         <h3 className="mt-3 line-clamp-1 text-lg font-bold">{project.title}</h3>
-        <p className="text-sm font-medium text-royal">by {project.student?.full_name ?? "Elevate student"}</p>
-        <p className="mt-2 line-clamp-2 flex-1 text-sm text-muted-foreground">{project.description}</p>
-        <Link
-          to="/projects/$id"
-          params={{ id: project.id }}
-          className="mt-4 inline-flex items-center gap-1.5 self-start text-sm font-semibold text-foreground underline-offset-4 hover:text-royal hover:underline"
-        >
-          View Project <ArrowUpRight className="h-4 w-4" aria-hidden />
-          <span className="sr-only">: {project.title}</span>
-        </Link>
+        <div className="mt-1 flex items-center gap-2">
+          <StudentAvatar name={project.student?.full_name ?? "Elevate student"} url={project.student?.avatar_url} size="sm" className="h-7 w-7 text-[10px]" />
+          <p className="text-sm font-medium text-royal">{project.student?.full_name ?? "Elevate student"}</p>
+        </div>
+        <p className="mt-2 line-clamp-2 flex-1 text-sm text-muted-foreground">{summary}</p>
+        <div className="mt-4 flex flex-wrap gap-x-4 gap-y-2">
+          <Link to="/projects/$id" params={{ id: project.id }} className={actionClass}>
+            View Project <ArrowUpRight className="h-4 w-4" aria-hidden />
+            <span className="sr-only">: {project.title}</span>
+          </Link>
+          {project.project_url && (
+            <a href={project.project_url} target="_blank" rel="noopener noreferrer" className={actionClass}>
+              Open Project <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+            </a>
+          )}
+          {project.document_url && (
+            <PdfLink value={project.document_url} className={actionClass}>
+              <FileText className="h-3.5 w-3.5" aria-hidden /> View PDF
+            </PdfLink>
+          )}
+        </div>
       </div>
     </article>
   );

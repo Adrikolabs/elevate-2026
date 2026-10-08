@@ -2,7 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, ExternalLink, FileText } from "lucide-react";
 import { isValidUuid, projectQuery } from "@/lib/data";
-import { ProjectCover } from "@/components/projects/ProjectCard";
+import { PdfLink, ProjectCover } from "@/components/projects/ProjectCard";
+import { useFileUrl } from "@/lib/storage";
+import { STATUS_LABEL } from "@/lib/projects";
 import { DepartmentBadge, EmptyState, StudentAvatar } from "@/components/common/primitives";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -67,6 +69,7 @@ function ProjectDetail() {
     );
   }
 
+  const pdfSrc = project.document_url;
   const hasEmbed = !!(project.video_url || (project.project_url && embedUrl(project.project_url)));
 
   return (
@@ -81,6 +84,7 @@ function ProjectDetail() {
             <span className="rounded-full bg-navy-foreground/10 px-2.5 py-0.5 text-[11px] font-semibold">{project.project_type}</span>
           </div>
           <h1 className="mt-3 text-3xl font-extrabold sm:text-5xl">{project.title}</h1>
+          {project.short_description && <p className="mt-3 max-w-2xl text-navy-foreground/80">{project.short_description}</p>}
           {project.student && (
             <Link to="/students/$id" params={{ id: project.student.id }} className="mt-5 inline-flex items-center gap-3 hover:text-gold-warm">
               <StudentAvatar name={project.student.full_name} url={project.student.avatar_url} size="sm" />
@@ -90,6 +94,12 @@ function ProjectDetail() {
         </div>
       </div>
       <div className="mx-auto max-w-5xl space-y-8 px-4 py-10 sm:px-6">
+        {project.submission_status !== "approved" && (
+          <div role="status" className="rounded-2xl border border-gold/40 bg-accent p-4 text-sm">
+            <p className="font-bold">Status: {STATUS_LABEL[project.submission_status]}</p>
+            <p className="text-muted-foreground">Only you and the Elevate Academy team can see this project until it is approved.</p>
+          </div>
+        )}
         {hasEmbed ? (
           <MediaPreview videoUrl={project.video_url} projectUrl={project.project_url} title={project.title} />
         ) : (
@@ -100,7 +110,15 @@ function ProjectDetail() {
         <div className="grid gap-8 md:grid-cols-[1fr_260px]">
           <div>
             <h2 className="text-xl font-bold">About this project</h2>
-            <p className="mt-3 whitespace-pre-wrap leading-relaxed text-muted-foreground">{project.description ?? "No description provided."}</p>
+            <p className="mt-3 whitespace-pre-wrap leading-relaxed text-muted-foreground">{project.description ?? project.short_description ?? "No description provided."}</p>
+            {project.tools_used?.length > 0 && (
+              <div className="mt-6">
+                <h3 className="text-sm font-bold uppercase tracking-[0.15em] text-muted-foreground">Tools &amp; technologies</h3>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {project.tools_used.map((t) => <span key={t} className="rounded-full border bg-card px-3 py-1 text-xs font-semibold">{t}</span>)}
+                </div>
+              </div>
+            )}
           </div>
           <aside className="space-y-3">
             {project.project_url && (
@@ -112,17 +130,30 @@ function ProjectDetail() {
             )}
             {project.document_url && (
               <Button asChild variant="outline" className="w-full">
-                <a href={project.document_url} target="_blank" rel="noopener noreferrer">
-                  <FileText className="h-4 w-4" /> View document
-                </a>
+                <PdfLink value={project.document_url}>
+                  <FileText className="h-4 w-4" /> View Project PDF
+                </PdfLink>
+              </Button>
+            )}
+            {project.student && (
+              <Button asChild variant="ghost" className="w-full">
+                <Link to="/students/$id" params={{ id: project.student.id }}>View student profile</Link>
               </Button>
             )}
           </aside>
         </div>
-        {project.document_url && /\.pdf(\?|$)/i.test(project.document_url) && (
-          <iframe src={project.document_url} title={`${project.title} PDF`} className="h-[70vh] w-full rounded-2xl border" loading="lazy" />
+        {pdfSrc && <InlinePdf value={pdfSrc} title={project.title} />}
+        {false && (
+          <iframe src={project.document_url ?? ""} title={`${project.title} PDF`} className="h-[70vh] w-full rounded-2xl border" loading="lazy" />
         )}
       </div>
     </article>
   );
+}
+
+function InlinePdf({ value, title }: { value: string; title: string }) {
+  const src = useFileUrl(value);
+  const isPdf = value.startsWith("storage:project-pdfs/") || /\.pdf(\?|$)/i.test(value);
+  if (!src || !isPdf) return null;
+  return <iframe src={src} title={`${title} PDF`} className="hidden h-[70vh] w-full rounded-2xl border md:block" loading="lazy" />;
 }
