@@ -143,9 +143,6 @@ function ProjectDetail() {
           </aside>
         </div>
         {pdfSrc && <InlinePdf value={pdfSrc} title={project.title} />}
-        {false && (
-          <iframe src={project.document_url ?? ""} title={`${project.title} PDF`} className="h-[70vh] w-full rounded-2xl border" loading="lazy" />
-        )}
       </div>
     </article>
   );
