@@ -79,7 +79,7 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
       ) : (
         <div className={cn("rounded-2xl border p-8 text-center", dark ? "border-gold/40 bg-navy-foreground/5" : "bg-card shadow-gold")}>
           <p className={cn("font-display text-3xl font-extrabold sm:text-4xl", dark ? "text-gold-warm" : "text-royal")}>
-            {state.phase === "today" ? "Today is Graduation Day! 🎓" : "Congratulations, Class of December 2026! 🎓"}
+            {state.phase === "today" ? "Today is Graduation Day! 🎓" : "Congratulations Elevate Academy Class of 2026! 🎉"}
           </p>
           {state.phase === "past" && (
             <p className={cn("mt-2", dark ? "text-navy-foreground/75" : "text-muted-foreground")}>

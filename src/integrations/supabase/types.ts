@@ -166,6 +166,36 @@ export type Database = {
           },
         ]
       }
+      hubs: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       projects: {
         Row: {
           admin_feedback: string | null
@@ -174,6 +204,7 @@ export type Database = {
           department_id: string
           description: string | null
           document_url: string | null
+          hub_id: string | null
           id: string
           is_featured: boolean
           is_published: boolean
@@ -196,6 +227,7 @@ export type Database = {
           department_id: string
           description?: string | null
           document_url?: string | null
+          hub_id?: string | null
           id?: string
           is_featured?: boolean
           is_published?: boolean
@@ -218,6 +250,7 @@ export type Database = {
           department_id?: string
           description?: string | null
           document_url?: string | null
+          hub_id?: string | null
           id?: string
           is_featured?: boolean
           is_published?: boolean
@@ -242,6 +275,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "projects_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "hubs"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "projects_student_id_fkey"
             columns: ["student_id"]
             isOneToOne: false
@@ -262,6 +302,7 @@ export type Database = {
           full_name: string
           github_url: string | null
           graduation_year: number
+          hub_id: string | null
           id: string
           is_active: boolean
           is_demo: boolean
@@ -283,6 +324,7 @@ export type Database = {
           full_name: string
           github_url?: string | null
           graduation_year?: number
+          hub_id?: string | null
           id?: string
           is_active?: boolean
           is_demo?: boolean
@@ -304,6 +346,7 @@ export type Database = {
           full_name?: string
           github_url?: string | null
           graduation_year?: number
+          hub_id?: string | null
           id?: string
           is_active?: boolean
           is_demo?: boolean
@@ -320,6 +363,13 @@ export type Database = {
             columns: ["department_id"]
             isOneToOne: false
             referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "students_hub_id_fkey"
+            columns: ["hub_id"]
+            isOneToOne: false
+            referencedRelation: "hubs"
             referencedColumns: ["id"]
           },
         ]
@@ -407,6 +457,7 @@ export type Database = {
           github_url: string
           graduation_year: number
           has_voted: boolean
+          hub_id: string
           id: string
           is_active: boolean
           is_demo: boolean
@@ -414,6 +465,7 @@ export type Database = {
           linkedin_url: string
           phone: string
           portfolio_url: string
+          project_status: string
           student_code: string
           votes_received: number
         }[]
@@ -426,6 +478,7 @@ export type Database = {
           avatar_url: string
           behance_url: string
           bio: string
+          created_at: string
           department_id: string
           department_name: string
           email: string
@@ -433,11 +486,15 @@ export type Database = {
           github_url: string
           graduation_year: number
           has_voted: boolean
+          hub_id: string
+          hub_name: string
           id: string
           is_active: boolean
           is_nominee: boolean
           linkedin_url: string
+          phone: string
           portfolio_url: string
+          student_code: string
           voted_at: string
         }[]
       }
@@ -458,6 +515,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      roster_lookup: {
+        Args: { _email: string; _student_code: string }
+        Returns: {
+          account_linked: boolean
+          is_active: boolean
+          student_id: string
+        }[]
+      }
       save_my_project: {
         Args: {
           _cover_image_url: string
@@ -473,6 +538,18 @@ export type Database = {
         Returns: Json
       }
       set_my_headshot: { Args: { _path: string }; Returns: undefined }
+      update_my_details: {
+        Args: {
+          _behance_url: string
+          _bio: string
+          _full_name: string
+          _github_url: string
+          _linkedin_url: string
+          _phone: string
+          _portfolio_url: string
+        }
+        Returns: undefined
+      }
       update_my_profile: {
         Args: {
           _behance_url: string

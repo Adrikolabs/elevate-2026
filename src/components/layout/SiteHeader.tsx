@@ -16,7 +16,6 @@ import {
 
 const NAV = [
   { to: "/", label: "Home" },
-  { to: "/countdown", label: "Countdown" },
   { to: "/projects", label: "Projects" },
   { to: "/students", label: "Students" },
   { to: "/wishes", label: "Graduation Wishes" },

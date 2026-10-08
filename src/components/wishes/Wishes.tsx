@@ -69,7 +69,7 @@ export function WishForm() {
       </div>
     );
   }
-  if (!student) {
+  if (!student || !student.is_active) {
     return (
       <div className="rounded-2xl border bg-card p-6 text-center text-sm text-muted-foreground shadow-soft">
         Only registered Elevate Academy students can post wishes.

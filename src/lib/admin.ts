@@ -1,5 +1,6 @@
 import { queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { PROJECT_SELECT, type Project } from "@/lib/data";
 
 export type AdminStudent = {
   id: string;
@@ -8,6 +9,8 @@ export type AdminStudent = {
   email: string;
   phone: string | null;
   department_id: string | null;
+  hub_id: string | null;
+  project_status: "draft" | "pending" | "approved" | "rejected" | null;
   avatar_url: string | null;
   bio: string | null;
   graduation_year: number;
@@ -34,17 +37,41 @@ export const adminCountsQuery = queryOptions({
   queryFn: async () => {
     const [votes, projects, messages] = await Promise.all([
       supabase.from("votes").select("id, department_id, created_at"),
-      supabase.from("projects").select("id", { count: "exact", head: true }),
+      supabase.from("projects").select("id, submission_status, department_id, hub_id"),
       supabase.from("graduation_messages").select("id", { count: "exact", head: true }),
     ]);
     if (votes.error) throw votes.error;
     return {
       votes: votes.data ?? [],
-      projects: projects.count ?? 0,
+      projects: projects.data ?? [],
       messages: messages.count ?? 0,
     };
   },
 });
+
+export const adminProjectsQuery = queryOptions({
+  queryKey: ["admin", "projects"],
+  queryFn: async (): Promise<Project[]> => {
+    const { data, error } = await supabase
+      .from("projects")
+      .select(PROJECT_SELECT)
+      .order("submitted_at", { ascending: false, nullsFirst: false })
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    return data as unknown as Project[];
+  },
+});
+
+export type AccountStatus = "pending_activation" | "active" | "disabled";
+export function accountStatus(s: { is_active: boolean; account_linked: boolean }): AccountStatus {
+  if (!s.is_active) return "disabled";
+  return s.account_linked ? "active" : "pending_activation";
+}
+export const ACCOUNT_STATUS_LABEL: Record<AccountStatus, string> = {
+  pending_activation: "Pending Activation",
+  active: "Active",
+  disabled: "Disabled",
+};
 
 /** Records an administrator action. RLS only accepts rows from admins, stamped with their own id. */
 export async function logAdminAction(action: string, entityType: string, entityId: string | null, description: string) {

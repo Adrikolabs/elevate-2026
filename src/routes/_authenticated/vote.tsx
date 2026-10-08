@@ -70,7 +70,7 @@ function VotePage() {
       </>
     );
   }
-  if (!student) {
+  if (!student || !student.is_active) {
     return (
       <>
         <PageHeader eyebrow="Graduation Awards" title="Vote" />
