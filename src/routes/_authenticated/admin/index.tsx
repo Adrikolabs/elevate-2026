@@ -75,7 +75,7 @@ function AdminDashboard() {
         <Stat icon={Award} label="Nominees" value={active.filter((s) => s.is_nominee).length} />
         <Stat icon={CheckCircle2} label="Votes cast" value={counts.data?.votes.length ?? 0} />
         <Stat icon={UserX} label="Yet to vote" value={eligible.length - voted} />
-        <Stat icon={FolderOpen} label="Projects" value={counts.data?.projects ?? 0} />
+        <Stat icon={FolderOpen} label="Projects" value={counts.data?.projects.length ?? 0} />
         <Stat icon={MessageSquareHeart} label="Graduation messages" value={counts.data?.messages ?? 0} />
       </div>
       <div className="grid gap-6 xl:grid-cols-[1fr_280px]">
