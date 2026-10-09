@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ResultsRouteImport } from './routes/results'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
 import { Route as WishesRouteImport } from './routes/wishes'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
@@ -42,6 +44,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -50,6 +57,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const ResultsRoute = ResultsRouteImport.update({
   id: '/results',
   path: '/results',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WishesRoute = WishesRouteImport.update({
@@ -125,8 +137,10 @@ const AuthenticatedAdminStudentsRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/wishes': typeof WishesRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/profile': typeof AuthenticatedProfileRoute
@@ -144,8 +158,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/wishes': typeof WishesRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/vote': typeof AuthenticatedVoteRoute
@@ -164,8 +180,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
   '/reset-password': typeof ResetPasswordRoute
   '/results': typeof ResultsRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/wishes': typeof WishesRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
@@ -185,8 +203,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/register'
     | '/reset-password'
     | '/results'
+    | '/verify-email'
     | '/wishes'
     | '/admin'
     | '/profile'
@@ -204,8 +224,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/login'
+    | '/register'
     | '/reset-password'
     | '/results'
+    | '/verify-email'
     | '/wishes'
     | '/profile'
     | '/vote'
@@ -223,8 +245,10 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/login'
+    | '/register'
     | '/reset-password'
     | '/results'
+    | '/verify-email'
     | '/wishes'
     | '/_authenticated/admin'
     | '/_authenticated/profile'
@@ -244,8 +268,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ResultsRoute: typeof ResultsRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
   WishesRoute: typeof WishesRoute
   ProjectsIdRoute: typeof ProjectsIdRoute
   StudentsIdRoute: typeof StudentsIdRoute
@@ -276,6 +302,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
@@ -288,6 +321,13 @@ declare module '@tanstack/react-router' {
       path: '/results'
       fullPath: '/results'
       preLoaderRoute: typeof ResultsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/wishes': {
@@ -425,8 +465,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ResultsRoute: ResultsRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
   WishesRoute: WishesRoute,
   ProjectsIdRoute: ProjectsIdRoute,
   StudentsIdRoute: StudentsIdRoute,
