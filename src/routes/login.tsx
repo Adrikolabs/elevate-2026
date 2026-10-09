@@ -11,7 +11,7 @@ import { Logo } from "@/components/common/primitives";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -85,6 +85,11 @@ function LoginPage() {
       if (!password.success) { toast.error(password.error.issues[0]?.message); return; }
       {
         const { error } = await supabase.auth.signInWithPassword({ email: email.data, password: password.data });
+        if (error && /email not confirmed/i.test(error.message)) {
+          await supabase.auth.resend({ type: "signup", email: email.data });
+          navigate({ to: "/verify-email", search: { email: email.data } });
+          return;
+        }
         if (error) throw error;
         toast.success("Welcome back!");
       }
@@ -126,10 +131,9 @@ function LoginPage() {
             </p>
             {mode !== "forgot" ? (
               <Tabs value={mode} onValueChange={(v) => { setMode(v as "signin" | "signup"); setNotice(null); }} className="mt-6">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="signin">Sign in</TabsTrigger>
-                  <TabsTrigger value="signup">First time? Activate</TabsTrigger>
-                </TabsList>
+                <p className="text-center text-sm text-muted-foreground">
+                  New student? <Link to="/register" className="font-medium text-primary hover:underline">Create your account</Link>
+                </p>
                 <TabsContent value={mode}>
                   <form onSubmit={handle} className="mt-4 space-y-4" noValidate>
                     <div className="space-y-1.5">

@@ -36,6 +36,13 @@
       "when": 1791446649449,
       "tag": "0004_hubs_and_student_portal",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1791544898138,
+      "tag": "0005_open_registration",
+      "breakpoints": true
     }
   ]
 }

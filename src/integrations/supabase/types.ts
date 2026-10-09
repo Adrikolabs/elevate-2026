@@ -292,6 +292,7 @@ export type Database = {
       }
       students: {
         Row: {
+          account_status: string
           auth_user_id: string | null
           avatar_url: string | null
           behance_url: string | null
@@ -314,6 +315,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          account_status?: string
           auth_user_id?: string | null
           avatar_url?: string | null
           behance_url?: string | null
@@ -336,6 +338,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          account_status?: string
           auth_user_id?: string | null
           avatar_url?: string | null
           behance_url?: string | null
