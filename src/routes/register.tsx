@@ -72,6 +72,11 @@ function RegisterPage() {
     }
     // An existing confirmed email returns a user with no identities.
     if (data.user && data.user.identities?.length === 0) return setExists(true);
+    if (data.session) {
+      toast.success("Registration successful 🎉 Welcome to Elevate Academy!");
+      navigate({ to: "/profile" });
+      return;
+    }
     navigate({ to: "/verify-email", search: { email: email.data } });
   };
 
