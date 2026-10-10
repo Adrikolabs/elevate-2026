@@ -12,7 +12,7 @@
 ## Architecture rules
 - Voting writes go only through the `cast_vote` database function; `votes` has no insert/update/delete policies — never add them (keeps the department/one-vote rules server-enforced).
 - Student email/phone are hidden via column-level grants: always select `STUDENT_PUBLIC_COLUMNS` (src/lib/data.ts), never `*`, on `students`; admins read private fields via the `admin_list_students` RPC.
-- Students self-register (/register → email code on /verify-email); on email confirmation a DB trigger links an existing students/admins row by email or creates a student row from sign-up metadata — keeps profile creation server-side. Admin privilege lives only in `user_roles`.
+- Students self-register on /register and are signed in immediately (email auto-confirm on; /verify-email kept for code flow if re-enabled); on email confirmation a DB trigger links an existing students/admins row by email or creates a student row from sign-up metadata — keeps profile creation server-side. Admin privilege lives only in `user_roles`.
 - Data reads use TanStack Query option factories in src/lib/data.ts and src/lib/admin.ts with the browser client (RLS applies); no server functions needed yet.
 - Admin pages live under `src/routes/_authenticated/admin/`; the layout checks `has_role` and the root layout hides the public header there.
 - Admin actions write an `audit_logs` row via `logAdminAction` (RLS requires admin_id = auth.uid()).
