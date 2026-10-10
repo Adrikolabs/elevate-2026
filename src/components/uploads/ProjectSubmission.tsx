@@ -4,7 +4,7 @@ import { FileText, ImageUp, Loader2, Send, Save } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { myProjectQuery } from "@/lib/data";
-import { checkPdfFile, INVALID_PDF, PROJECT_IMAGE_MAX_BYTES } from "@/lib/file-rules";
+import { checkPdfFile, PROJECT_IMAGE_MAX_BYTES } from "@/lib/file-rules";
 import { parseTools, PROJECT_TYPES, projectDraftSchema, projectErrorMessage, STATUS_LABEL, submissionProblems } from "@/lib/projects";
 import { compressImage, extensionForMime, readFileType, uploadWithProgress, useFileUrl } from "@/lib/storage";
 import { validateImage } from "@/components/uploads/HeadshotUploader";
@@ -47,7 +47,7 @@ export function ProjectSubmission({ studentId }: { studentId: string }) {
     if (!f) return;
     const check = checkPdfFile(f);
     if (!check.ok) return void toast.error(check.title, { description: check.message });
-    if ((await readFileType(f)) !== "pdf") return void toast.error(INVALID_PDF.ok ? "" : INVALID_PDF.title);
+    if ((await readFileType(f)) !== "pdf") return void toast.error("Invalid PDF", { description: "Please upload a valid PDF document." });
     setPdf(f);
   };
 
