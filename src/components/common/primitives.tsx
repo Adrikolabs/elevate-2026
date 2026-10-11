@@ -5,22 +5,19 @@ import { cn } from "@/lib/utils";
 import { departmentsQuery } from "@/lib/data";
 import { useFileUrl } from "@/lib/storage";
 import { Skeleton } from "@/components/ui/skeleton";
+import logoAsset from "@/assets/era92-elevate-logo.png.asset.json";
 
 export function Logo({ light = false, className }: { light?: boolean; className?: string }) {
   return (
-    <span className={cn("flex items-center gap-2.5", className)}>
-      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-gold-gradient text-gold-foreground shadow-soft">
-        <GraduationCap className="h-5 w-5" aria-hidden />
-      </span>
-      <span className="leading-tight">
-        <span className={cn("block font-display text-[15px] font-bold", light ? "text-navy-foreground" : "text-foreground")}>
-          Elevate Academy
-        </span>
-        <span className={cn("block text-[10px] font-semibold uppercase tracking-[0.2em]", light ? "text-gold-warm" : "text-gold")}>
-          Class of Dec 2026
-        </span>
-      </span>
-    </span>
+    <img
+      src={logoAsset.url}
+      alt="era92 · Elevate Academy"
+      className={cn(
+        "h-10 w-auto",
+        light && "rounded-lg bg-white px-2.5 py-1.5 shadow-soft",
+        className,
+      )}
+    />
   );
 }
 

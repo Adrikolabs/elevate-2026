@@ -61,7 +61,7 @@ function HomePage() {
               <Award className="h-4 w-4" aria-hidden /> Graduation Celebration Portal
             </p>
             <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] sm:text-6xl lg:text-7xl">
-              Elevate Academy <span className="text-gold-gradient">Class of December 2026</span>
+              Elevate Academy <span className="text-gold-gradient">Class of 2026 Cohort 7</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-navy-foreground/80 sm:text-xl">
               Celebrating talent, creativity, learning and achievement.
