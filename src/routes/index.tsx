@@ -16,12 +16,12 @@ export const Route = createFileRoute("/")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Elevate Academy Class of December 2026 Celebration Portal" },
+      { title: "Elevate Academy Class of 2026 Cohort 7 Celebration Portal" },
       {
         name: "description",
         content: "Celebrating Creativity, Growth, Achievement and the Next Generation of Talent. Count down to graduation, explore projects and vote.",
       },
-      { property: "og:title", content: "Elevate Academy Class of December 2026 Celebration Portal" },
+      { property: "og:title", content: "Elevate Academy Class of 2026 Cohort 7 Celebration Portal" },
       { property: "og:description", content: "Count down to graduation, explore student projects, vote and leave graduation wishes." },
     ],
   }),
@@ -61,7 +61,7 @@ function HomePage() {
               <Award className="h-4 w-4" aria-hidden /> Graduation Celebration Portal
             </p>
             <h1 className="mt-6 text-4xl font-extrabold leading-[1.05] sm:text-6xl lg:text-7xl">
-              Elevate Academy <span className="text-gold-gradient">Class of December 2026</span>
+              Elevate Academy <span className="text-gold-gradient">Class of 2026 Cohort 7</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg text-navy-foreground/80 sm:text-xl">
               Celebrating talent, creativity, learning and achievement.
