@@ -1,6 +1,6 @@
 import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
 import { useState } from "react";
-import { Award, Home, LayoutDashboard, LogOut, Menu, MessageSquareHeart, Settings, ShieldAlert, Users } from "lucide-react";
+import { Award, FolderOpen, Home, LayoutDashboard, LogOut, Menu, MessageSquareHeart, Settings, ShieldAlert, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { Logo } from "@/components/common/primitives";
@@ -25,6 +25,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 const NAV = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/students", label: "Students", icon: Users },
+  { to: "/admin/projects", label: "Projects", icon: FolderOpen },
   { to: "/admin/nominees", label: "Nominees", icon: Award },
   { to: "/admin/messages", label: "Graduation Wishes", icon: MessageSquareHeart },
   { to: "/admin/settings", label: "Graduation Settings", icon: Settings },
