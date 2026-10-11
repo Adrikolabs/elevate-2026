@@ -9,6 +9,7 @@ import { StudentCard } from "@/components/students/StudentCard";
 import { WishCard } from "@/components/wishes/Wishes";
 import { CardGridSkeleton, EmptyState, SectionHeading } from "@/components/common/primitives";
 import { Button } from "@/components/ui/button";
+import { WinnersSection } from "@/components/results/WinnersSection";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -80,6 +81,10 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      <WinnersSection />
+
+
 
       {/* Featured projects */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
