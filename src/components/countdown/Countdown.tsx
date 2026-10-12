@@ -36,7 +36,7 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
     return (
       <div className="grid grid-cols-4 gap-3 sm:gap-4" aria-busy="true">
         {Array.from({ length: 4 }).map((_, i) => (
-          <Skeleton key={i} className={cn("h-24 rounded-2xl sm:h-28", dark && "bg-navy-foreground/10")} />
+          <Skeleton key={i} className={cn("h-32 rounded-2xl sm:h-40", dark && "bg-navy-foreground/10")} />
         ))}
       </div>
     );
@@ -47,7 +47,7 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
   return (
     <div>
       {state.phase === "upcoming" ? (
-        <div className="grid grid-cols-4 gap-2.5 sm:gap-4" role="timer" aria-live="off" aria-label="Time until graduation">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4" role="timer" aria-live="off" aria-label="Time until graduation">
           {[
             ["Days", state.days],
             ["Hours", state.hours],
@@ -57,20 +57,20 @@ export function Countdown({ variant = "dark", showDetails = true }: { variant?: 
             <div
               key={label as string}
               className={cn(
-                "rounded-2xl border px-2 py-4 text-center sm:py-6",
+                "rounded-2xl border px-3 py-6 text-center sm:px-4 sm:py-8",
                 dark ? "border-navy-foreground/15 bg-navy-foreground/5 backdrop-blur" : "bg-card shadow-soft",
               )}
             >
               <div
                 key={String(value)}
                 className={cn(
-                  "font-display text-3xl font-extrabold tabular-nums animate-in fade-in slide-in-from-top-1 duration-300 sm:text-5xl",
+                  "font-display text-5xl font-extrabold tabular-nums animate-in fade-in slide-in-from-top-1 duration-300 sm:text-6xl lg:text-7xl",
                   dark ? "text-gold-warm" : "text-royal",
                 )}
               >
                 {label === "Days" ? value : pad(value as number)}
               </div>
-              <div className={cn("mt-1 text-[10px] font-semibold uppercase tracking-[0.2em] sm:text-xs", dark ? "text-navy-foreground/70" : "text-muted-foreground")}>
+              <div className={cn("mt-2 text-[11px] font-semibold uppercase tracking-[0.2em] sm:text-xs", dark ? "text-navy-foreground/70" : "text-muted-foreground")}>
                 {label}
               </div>
             </div>
