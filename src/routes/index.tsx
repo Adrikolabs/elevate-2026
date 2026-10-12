@@ -56,8 +56,8 @@ function HomePage() {
         <img src={heroImg} alt="" width={1920} height={1088} className="absolute inset-0 -z-20 h-full w-full object-cover" />
         <div className="absolute inset-0 -z-10 bg-hero-overlay" />
         <div className="mx-auto w-full max-w-7xl px-4 pb-16 pt-28 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
-            <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="grid grid-cols-1 items-center gap-10 sm:gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+            <div className="min-w-0 animate-in fade-in slide-in-from-bottom-4 duration-700">
               <p className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-navy/40 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.25em] text-gold-warm backdrop-blur">
                 <Award className="h-4 w-4" aria-hidden /> Elevate Class of 2026
               </p>
